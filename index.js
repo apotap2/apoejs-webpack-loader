@@ -3,12 +3,29 @@ var ejs = require('ejs'),
   utils = require('loader-utils'),
   path = require('path'),
   htmlmin = require('html-minifier'),
-  merge = require('merge');
+  merge = require('merge'),
+  qs = require('qs');
 
+function getQuery() {
+  if (typeof this.query === 'object')
+    return this.query;
 
-module.exports = function(source) {
+  const query = this.query.substr(1);
+
+  if (!query) {
+    return {};
+  }
+
+  if (query.substr(0, 1) === '{' && query.substr(-1) === '}') {
+    return JSON.parse(query);
+  }
+
+  return qs.parse(query);
+}
+
+module.exports = function (source) {
   this.cacheable && this.cacheable();
-  var query = typeof this.query === 'object' ? this.query : utils.parseQuery(this.query);
+  var query = getQuery();
   var _options = typeof this.options === 'object' ? this.options['ejs-compiled-loader'] || {} : {};
   _options = typeof utils.getOptions === 'function' ? merge(utils.getOptions(this), _options) : _options;
   var opts = merge(_options, query);
@@ -40,7 +57,7 @@ module.exports = function(source) {
     if (!this.minimize && opts.beautify !== false) {
       var ast = UglifyJS.parse(template.toString());
       ast.figure_out_scope();
-      template = ast.print_to_string({beautify: true});
+      template = ast.print_to_string({ beautify: true });
     }
   }
   return 'module.exports = ' + template;

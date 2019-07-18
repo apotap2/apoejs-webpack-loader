@@ -1,4 +1,8 @@
-# ejs-webpack-loader for webpack 4.x
+# apoejs-webpack-loader for webpack 4.x
+
+Fork from ejs-webpack-loader (https://github.com/rorkflash/ejs-webpack-loader), Ashot Gasparyan <rorkflash@gmail.com>
+
+# Forked from version:
 
 EJS loader for [webpack](http://webpack.github.io/). Uses [ejs](https://github.com/mde/ejs) function to compile templates.
 
