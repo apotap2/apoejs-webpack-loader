@@ -6,11 +6,11 @@ var ejs = require('ejs'),
   merge = require('merge'),
   qs = require('qs');
 
-function getQuery() {
-  if (typeof this.query === 'object')
-    return this.query;
+function getQuery(from) {
+  if (typeof from === 'object')
+    return from;
 
-  const query = this.query.substr(1);
+  const query = from.substr(1);
 
   if (!query) {
     return {};
@@ -25,7 +25,7 @@ function getQuery() {
 
 module.exports = function (source) {
   this.cacheable && this.cacheable();
-  var query = getQuery();
+  var query = getQuery(this.query);
   var _options = typeof this.options === 'object' ? this.options['ejs-compiled-loader'] || {} : {};
   _options = typeof utils.getOptions === 'function' ? merge(utils.getOptions(this), _options) : _options;
   var opts = merge(_options, query);

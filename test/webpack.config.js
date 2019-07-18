@@ -6,13 +6,17 @@ module.exports = {
     filename: "bundle.js"
   },
   module: {
-    loaders: [
-      {test: /\.ejs$/, loader: require.resolve("../") + "?htmlmin"}
+    rules: [
+      {
+        test: /\.ejs$/,
+        use: [{
+          loader: require.resolve("../"),
+          options: {
+            htmlmin: true,
+            htmlminOptions: { removeComments: true }
+          }
+        }],
+      }
     ]
   },
-  'ejs-compiled-loader': {
-    'htmlminOptions': {
-      removeComments: true
-    }
-  }
 }
